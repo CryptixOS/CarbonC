@@ -5,6 +5,6 @@
 #* SPDX-License-Identifier: GPL-3
 #*/
 subdir('Entry')
-subdir('InternalAPI')
+subdir('Sysdeps')
 
 incs += include_directories('include')

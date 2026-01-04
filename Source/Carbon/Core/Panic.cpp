@@ -6,13 +6,13 @@
  */
 #include <Carbon/Core/Log.hpp>
 #include <Carbon/Core/Panic.hpp>
-#include <Carbon/Platform/posix/unistd.h>
+#include <Carbon/Platform/posix/Sysdeps.hpp>
 
 namespace Carbon
 {
     CC_NORETURN void Panic(StringView message)
     {
-        using namespace InternalAPI;
+        using namespace Sysdeps;
         CarbonError(
             "CarbonC: Library crashed!\n"
             "Error Message:\n{}",

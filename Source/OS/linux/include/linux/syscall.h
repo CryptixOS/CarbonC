@@ -10,7 +10,7 @@
 
 #define SyscallInvoker "syscall"
 
-namespace Carbon::InternalAPI
+namespace Carbon::Sysdeps
 {
     struct Status
     {
@@ -37,6 +37,7 @@ namespace Carbon::InternalAPI
 
     constexpr usize      SYS_WRITE = 1;
     constexpr usize      SYS_MMAP  = 9;
+    constexpr usize      SYS_UNMAP = 11;
     constexpr usize      SYS_EXIT  = 60;
 
     static inline Status SyscallAsm0(upointer n)
@@ -84,7 +85,7 @@ namespace Carbon::InternalAPI
     static inline Status SyscallAsm4(upointer n, upointer a1, upointer a2,
                                      upointer a3, upointer a4)
     {
-        Status           ret;
+        Status            ret;
         register upointer r10 asm("r10") = a4;
         asm volatile(SyscallInvoker
                      : "=a"(ret.StatusCode)
@@ -96,7 +97,7 @@ namespace Carbon::InternalAPI
     static inline Status SyscallAsm5(upointer n, upointer a1, upointer a2,
                                      upointer a3, upointer a4, upointer a5)
     {
-        Status           ret;
+        Status            ret;
         register upointer r10 asm("r10") = a4;
         register upointer r8 asm("r8")   = a5;
         asm volatile(SyscallInvoker
@@ -110,7 +111,7 @@ namespace Carbon::InternalAPI
                                      upointer a3, upointer a4, upointer a5,
                                      upointer a6)
     {
-        Status           ret;
+        Status            ret;
         register upointer r10 asm("r10") = a4;
         register upointer r8 asm("r8")   = a5;
         register upointer r9 asm("r9")   = a6;
@@ -161,4 +162,4 @@ namespace Carbon::InternalAPI
     {
         return DoSyscall(upointer(args)...);
     }
-}; // namespace Carbon::InternalAPI
+}; // namespace Carbon::Sysdeps

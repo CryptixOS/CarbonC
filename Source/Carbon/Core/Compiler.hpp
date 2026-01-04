@@ -7,5 +7,9 @@
 #pragma once
 
 #define CC_NORETURN           [[noreturn]]
-#define CC_NOT_USED           [[maybe_unused]]
+#define CC_UNUSED             [[maybe_unused]]
 #define CC_NO_STACK_PROTECTOR __attribute__((no_stack_protector))
+#define CC_HIDDEN             [[gnu::visibility("hidden")]]
+#define CC_DESTRUCTOR         [[gnu::destructor]]
+#define CC_WEAK               [[gnu::weak]]
+#define CC_NOEXCEPT           noexcept

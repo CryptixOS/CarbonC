@@ -20,6 +20,10 @@
 #define MAP_ANONYMOUS 0x20
 
 #include <stdio.h>
-void* mmap(void* __addr, size_t __size, int __prot, int __flags, int __fd,
-           off_t __offset);
-int   munmap(void* __addr, size_t __size);
+
+extern "C"
+{
+    void* mmap(void* __addr, size_t __size, int __prot, int __flags, int __fd,
+               off_t __offset);
+    int   munmap(void* __addr, size_t __size);
+};

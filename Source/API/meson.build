@@ -4,5 +4,6 @@
 #*
 #* SPDX-License-Identifier: GPL-3
 #*/
+subdir('ansi')
 subdir('generic')
 subdir('posix')

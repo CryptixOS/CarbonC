@@ -67,12 +67,14 @@ macros = [
     '-DUACPI_FORMATTED_LOGGING',
     '-DFMT_BUILTIN_TYPES=0',
     '-D_LIBCPP_HAS_NO_THREADS',
+
+
 ]
 
 if arch == 'x86_64'
-  macros += ['-DCARBONC_ARCH=CARBONC_ARCH_X86_64', '-DCTOS_TARGET_X86_64']
+  macros += ['-DCARBONC_ARCH=CARBONC_ARCH_X86_64', '-DCARBONC_TARGET_X86_64']
 elif arch == 'aarch64'
-  macros += ['-DCARBONC_ARCH=CARBONC_ARCH_AARCH64', '-DCTOS_TARGET_AARCH64']
+  macros += ['-DCARBONC_ARCH=CARBONC_ARCH_AARCH64', '-DCARBONC_TARGET_AARCH64']
 else
   error('Unknown architecture: ' + arch)
 endif
@@ -95,6 +97,8 @@ add_global_arguments(
     '-nostdlib',
     '-static',
     '-I' + meson.project_source_root() / 'Source' / 'OS' / 'generic' / 'include',
+    '-mrdrnd',
+    '-mrdseed',
   ],
   language: ['c', 'cpp'],
 )
@@ -123,6 +127,9 @@ ld_args = [
 incs = []
 incs += include_directories('Source', 'Prism/Source')
 subdir('Source')
+
+subdir('Prism/Source')
+carbonc_srcs += srcs
 
 # ==============================================================================
 ### Dependencies

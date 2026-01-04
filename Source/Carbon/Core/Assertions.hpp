@@ -8,4 +8,6 @@
 
 #include <Prism/Debug/Assertions.hpp>
 
+#define Assert(...)           PrismAssert(__VA_ARGS__)
 #define AssertNotReached(...) PrismNotReached(__VA_ARGS__)
+#define AssertFmt(...)        PrismAssertFmt(__VA_ARGS__)

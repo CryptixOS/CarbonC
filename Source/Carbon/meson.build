@@ -5,6 +5,7 @@
 #* SPDX-License-Identifier: GPL-3
 #*/
 
+subdir('Core')
 subdir('Entry')
-subdir('Library')
 subdir('Memory')
+subdir('Platform')

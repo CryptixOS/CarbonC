@@ -6,5 +6,7 @@
 #*/
 
 carbonc_srcs += files(
+  'CarbonC.cpp',
+  'Panic.cpp',
   'Ubsan.cpp',
 )

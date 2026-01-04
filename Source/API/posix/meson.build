@@ -7,3 +7,5 @@
 incs += include_directories(
   'include'
 )
+
+subdir('generic')

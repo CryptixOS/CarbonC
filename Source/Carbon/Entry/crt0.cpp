@@ -4,8 +4,10 @@
  *
  * SPDX-License-Identifier: GPL-3
  */
+#include <Carbon/Core/Assertions.hpp>
+#include <Carbon/Core/CarbonC.hpp>
 #include <Carbon/Core/Types.hpp>
-#include <Carbon/Platform/posix/unistd.h>
+#include <Carbon/Platform/posix/Sysdeps.hpp>
 #include <string.h>
 
 namespace Carbon
@@ -57,7 +59,7 @@ namespace Carbon
             i32    argc = static_cast<i32>(stack[0]);
             char** argv = reinterpret_cast<char**>(&stack[1]);
 
-            using namespace InternalAPI;
+            using namespace Sysdeps;
             for (isize i = 0; i < argc; i++) Write(0, argv[i], strlen(argv[i]));
 
             // Skip argv
@@ -93,12 +95,16 @@ namespace Carbon
                 }
             }
 
+            Assert(InitializeLibrary());
             i32 status = main(0, nullptr);
             if (argc > 0) Write(0, argv[0], 5);
             if (argc > 1) Write(0, argv[1], 5);
 
-            for (usize i = 0; i < 10; i++) PM_UNUSED
+            // for (usize i = 0; i < 10; i++) PM_UNUSED
             isize nwritten = Write(0, EXIT_MESSAGE, EXIT_MESSAGE_LENGTH);
+            IgnoreUnused(nwritten);
+
+            // ShutdownLibrary();
             Exit(status);
         }
     }
