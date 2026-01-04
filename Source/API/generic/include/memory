@@ -6,3 +6,64 @@
  */
 #pragma once
 
+#include_next <memory>
+#include <new>
+
+namespace std
+{
+    template<typename Alloc>
+    struct allocator_traits;
+
+    template<typename Allocator>
+    struct deallocator
+    {
+        using value_type = typename Allocator::value_type;
+        Allocator alloc;
+        size_t size;
+
+        constexpr deallocator() noexcept = default;
+        constexpr explicit deallocator(const Allocator &alloc, size_t size) : alloc(alloc), size(size) { }
+        constexpr void operator()(value_type* ptr)
+        {
+            using Traits = allocator_traits<Allocator>;
+            for (ptrdiff_t i = this->size - 1; i >= 0; --i)
+                Traits::destroy(this->alloc, ptr + i);
+            Traits::deallocate(this->alloc, ptr, this->size);
+        }
+    };
+
+    template<typename Allocator, typename U>
+    using Rebind = typename allocator_traits<Allocator>::template rebind_alloc<U>;
+
+    template<typename T>
+    struct allocator
+    {
+        using value_type = T;
+        using pointer = T*;
+        using const_pointer = const T*;
+        using reference = T&;
+        using const_reference = const T&;
+        using size_type = size_t;
+        using difference_type = ptrdiff_t;
+
+        constexpr allocator() noexcept = default;
+
+        template<typename U>
+        constexpr allocator(const allocator<U> &other) noexcept { }
+
+        [[nodiscard]] constexpr T *allocate(size_t count)
+        {
+            return static_cast<T*>(::operator new(count * sizeof(T)));
+        }
+
+        constexpr void deallocate(T *ptr, size_t count)
+        {
+            ::operator delete(ptr, count * sizeof(T));
+        }
+
+        friend constexpr bool operator==(const allocator &, const allocator &) noexcept
+        {
+            return true;
+        }
+    };
+} // namespace std

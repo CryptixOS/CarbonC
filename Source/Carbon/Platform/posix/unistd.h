@@ -7,9 +7,10 @@
 #pragma once
 
 #include <Carbon/Core/Types.hpp>
+#include <Carbon/Core/Compiler.hpp>
 
 namespace Carbon::InternalAPI
 {
     isize Write(i32 fd, const void* buffer, usize count);
-    void  Exit(int status);
+    CC_NORETURN void  Exit(int status);
 } // namespace Carbon::InternalAPI

@@ -14,7 +14,7 @@ project('carbonc', ['c', 'cpp'],
     'b_lundef=false',
     'b_pie=true',
     'c_std=c17',
-    'cpp_std=c++23',
+    'cpp_std=c++26',
   ],
 )
 
@@ -61,12 +61,22 @@ macros = [
     '-DPRISM_BUILD_DEBUG=1',
     '-DPRISM_LOG_ENABLE=1',
     '-DPRISM_TARGET_CRYPTIX=0',
+    '-DPRISM_USE_NAMESPACE=1',
     '-DPRISM_TARGET_CARBONC=1',
     #'-DPRISM_DISABLE_FMT=1',
     '-DUACPI_FORMATTED_LOGGING',
     '-DFMT_BUILTIN_TYPES=0',
     '-D_LIBCPP_HAS_NO_THREADS',
 ]
+
+if arch == 'x86_64'
+  macros += ['-DCARBONC_ARCH=CARBONC_ARCH_X86_64', '-DCTOS_TARGET_X86_64']
+elif arch == 'aarch64'
+  macros += ['-DCARBONC_ARCH=CARBONC_ARCH_AARCH64', '-DCTOS_TARGET_AARCH64']
+else
+  error('Unknown architecture: ' + arch)
+endif
+
 
 add_global_arguments(
   [
@@ -93,7 +103,6 @@ add_global_arguments(
   [
     # pass the size argument to delete operator
     '-fsized-deallocation',
-    '-D__cplusplus=202302L',
     '-MP',
     '-fno-exceptions',
     '-fno-rtti',
@@ -107,7 +116,8 @@ add_global_arguments(
 cxx_args = []
 ld_args = [
   '-nostdlib',
-  '-static'
+  '-static',
+  '-Wl,-T,' + meson.current_source_dir() / 'Source' / 'linker.ld',
 ]
 
 incs = []
